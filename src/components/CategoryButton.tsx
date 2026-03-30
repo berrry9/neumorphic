@@ -1,7 +1,7 @@
 import { Pizza, Beef, Salad, UtensilsCrossed, Soup, Wine, Beer, GlassWater, Flame, Coffee } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
-import type { Category } from '../lib/supabase';
+import { Category } from '../lib/supabase';
 
 const iconMap: Record<string, any> = {
   pizza: Pizza,
@@ -34,8 +34,8 @@ export const CategoryButton = ({ category, isActive, itemCount, onClick }: Categ
       className={`flex-shrink-0 w-24 h-28 rounded-3xl flex flex-col items-center justify-center gap-2 transition-all duration-300 ${
         isActive
           ? isDark
-            ? 'bg-amber-600 shadow-[5px_5px_15px_#0a0a0a,-5px_-5px_15px_#1e1e1e] glow-active-dark'
-            : 'bg-amber-100 shadow-[5px_5px_15px_#bebebe,-5px_-5px_15px_#ffffff] glow-active'
+            ? 'bg-amber-600 shadow-[5px_5px_15px_#0a0a0a,-5px_-5px_15px_#1e1e1e]'
+            : 'bg-amber-100 shadow-[5px_5px_15px_#bebebe,-5px_-5px_15px_#ffffff]'
           : isDark
           ? 'bg-gray-800 shadow-[5px_5px_15px_#0a0a0a,-5px_-5px_15px_#1e1e1e]'
           : 'bg-gray-100 shadow-[5px_5px_15px_#bebebe,-5px_-5px_15px_#ffffff]'

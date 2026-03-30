@@ -5,14 +5,14 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export type Category = {
+export interface Category {
   id: string;
   name: string;
   icon: string;
   sort_order: number;
-};
+}
 
-export type MenuItem = {
+export interface MenuItem {
   id: string;
   category_id: string;
   name: string;
@@ -22,4 +22,4 @@ export type MenuItem = {
   rating: number;
   comments_count: number;
   type: 'food' | 'drink';
-};
+}

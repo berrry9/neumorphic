@@ -1,7 +1,7 @@
 import { Star, MessageCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
-import type { MenuItem } from '../lib/supabase';
+import { MenuItem } from '../lib/supabase';
 
 interface FoodCardProps {
   item: MenuItem;
@@ -65,7 +65,7 @@ export const FoodCard = ({ item }: FoodCardProps) => {
       <div className="flex items-center justify-between">
         <motion.div
           whileTap={{ scale: 0.95 }}
-          className={`px-6 py-2 rounded-full font-bold transition-all ${
+          className={`px-6 py-2 rounded-full font-bold ${
             isDark
               ? 'bg-gray-800 text-gray-100 shadow-[5px_5px_10px_#0a0a0a,-5px_-5px_10px_#1e1e1e]'
               : 'bg-gray-100 text-gray-800 shadow-[5px_5px_10px_#bebebe,-5px_-5px_10px_#ffffff]'

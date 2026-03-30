@@ -1,7 +1,7 @@
 import { Star, MessageCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
-import type { MenuItem } from '../lib/supabase';
+import { MenuItem } from '../lib/supabase';
 
 interface DrinkCardProps {
   item: MenuItem;
@@ -67,7 +67,7 @@ export const DrinkCard = ({ item }: DrinkCardProps) => {
         <div className="flex items-center justify-between">
           <motion.div
             whileTap={{ scale: 0.95 }}
-            className={`px-4 py-1.5 rounded-full text-sm font-bold transition-all ${
+            className={`px-4 py-1.5 rounded-full text-sm font-bold ${
               isDark
                 ? 'bg-gray-800 text-gray-100 shadow-[4px_4px_8px_#0a0a0a,-4px_-4px_8px_#1e1e1e]'
                 : 'bg-gray-100 text-gray-800 shadow-[4px_4px_8px_#bebebe,-4px_-4px_8px_#ffffff]'

@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from './contexts/ThemeContext';
-import { supabase } from './lib/supabase';
-import type { Category, MenuItem } from './lib/supabase';
+import { supabase, Category, MenuItem } from './lib/supabase';
 import { Header } from './components/Header';
 import { CategoryButton } from './components/CategoryButton';
-import { CategoryButtonSkeleton } from './components/CategoryButtonSkeleton';
 import { FoodCard } from './components/FoodCard';
-import { FoodCardSkeleton } from './components/FoodCardSkeleton';
 import { DrinkCard } from './components/DrinkCard';
-import { DrinkCardSkeleton } from './components/DrinkCardSkeleton';
 import { BottomNav } from './components/BottomNav';
 
 function App() {
@@ -17,7 +13,6 @@ function App() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [loading, setLoading] = useState(true);
-  const [itemsLoading, setItemsLoading] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -46,7 +41,6 @@ function App() {
   };
 
   const fetchMenuItems = async (categoryId: string) => {
-    setItemsLoading(true);
     const { data, error } = await supabase
       .from('menu_items')
       .select('*')
@@ -55,7 +49,10 @@ function App() {
     if (data && !error) {
       setMenuItems(data);
     }
-    setItemsLoading(false);
+  };
+
+  const getItemCountForCategory = (categoryId: string) => {
+    return menuItems.filter(item => item.category_id === categoryId).length;
   };
 
   const selectedCategoryData = categories.find(c => c.id === selectedCategory);
@@ -80,57 +77,33 @@ function App() {
 
         <div className="mb-8 overflow-x-auto scrollbar-hide">
           <div className="flex gap-4 pb-2">
-            {loading ? (
-              <>
-                {[...Array(5)].map((_, i) => (
-                  <CategoryButtonSkeleton key={i} />
-                ))}
-              </>
-            ) : (
-              categories.map((category) => (
-                <CategoryButton
-                  key={category.id}
-                  category={category}
-                  isActive={selectedCategory === category.id}
-                  itemCount={menuItems.filter(item => item.category_id === category.id).length}
-                  onClick={() => setSelectedCategory(category.id)}
-                />
-              ))
-            )}
+            {categories.map((category) => (
+              <CategoryButton
+                key={category.id}
+                category={category}
+                isActive={selectedCategory === category.id}
+                itemCount={getItemCountForCategory(category.id)}
+                onClick={() => setSelectedCategory(category.id)}
+              />
+            ))}
           </div>
         </div>
 
         <div className="space-y-6">
-          {itemsLoading ? (
-            <>
-              {isFoodCategory ? (
-                <>
-                  {[...Array(2)].map((_, i) => (
-                    <FoodCardSkeleton key={i} />
-                  ))}
-                </>
-              ) : (
-                <>
-                  {[...Array(3)].map((_, i) => (
-                    <DrinkCardSkeleton key={i} />
-                  ))}
-                </>
-              )}
-            </>
-          ) : menuItems.length > 0 ? (
-            menuItems.map((item) =>
-              isFoodCategory ? (
-                <FoodCard key={item.id} item={item} />
-              ) : (
-                <DrinkCard key={item.id} item={item} />
-              )
+          {menuItems.map((item) =>
+            isFoodCategory ? (
+              <FoodCard key={item.id} item={item} />
+            ) : (
+              <DrinkCard key={item.id} item={item} />
             )
-          ) : (
-            <div className={`text-center py-12 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-              No items available in this category
-            </div>
           )}
         </div>
+
+        {menuItems.length === 0 && (
+          <div className={`text-center py-12 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            No items available in this category
+          </div>
+        )}
       </div>
 
       <BottomNav />
